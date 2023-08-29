@@ -1,22 +1,10 @@
-import express from "express";
+import app from "./app";
 import colors from "colors";
-import dotenv from "dotenv";
+import env from "./util/validateEnv";
 import mongoose from "mongoose";
 
-// Dotenv Config
-dotenv.config();
-const port = process.env.PORT;
-const db = process.env.MONGODB;
-
-// Rest Object
-const app = express();
-
-// Middlewares
-
-// Rest API
-app.get("/", (req, res) => {
-  res.send("Wenn Mark Recopelacion");
-});
+const port = env.PORT;
+const db = env.MONGODB;
 
 // Database
 mongoose.connect(db!).then(() => {
