@@ -5,3 +5,4 @@
 > npm i express
 > npm i --save-dev @types/express
 > npx tsc - to create .js file
+> npm i --save-dev nodemon
