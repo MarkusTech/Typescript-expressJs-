@@ -4,3 +4,4 @@
 > npx tsc --init
 > npm i express
 > npm i --save-dev @types/express
+> npx tsc - to create .js file
