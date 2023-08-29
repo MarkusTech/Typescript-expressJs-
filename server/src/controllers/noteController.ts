@@ -35,7 +35,7 @@ const getNote: RequestHandler = async (req, res, next) => {
 
     res.status(200).json(note);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
