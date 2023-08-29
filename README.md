@@ -10,3 +10,4 @@
 > npx nodemon src/server.ts - to run environment process
 > npm i -D eslint
 > npx eslint --init
+> 1:46

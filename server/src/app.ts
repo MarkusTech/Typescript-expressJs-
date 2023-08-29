@@ -1,10 +1,14 @@
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
-import noteModel from "./models/note";
-import { isHttpError } from "http-errors";
+import express, { NextFunction, Request, Response } from "express";
+import createHttpError, { isHttpError } from "http-errors";
 import morgan from "morgan";
 import cors from "cors";
-import bodyParser from "body-parser";
+// import env from "./util/validateEnv";
+// import session from "express-session";
+// import MongoStore from "connect-mongo";
+
+// API IMPORTS
+import noteRoutes from "./routes/noteRoutes";
 
 // dotenv config
 dotenv.config();
@@ -15,19 +19,30 @@ const app = express();
 // Middleware
 app.use(morgan("dev"));
 app.use(cors());
-app.use(bodyParser.urlencoded());
 
-app.get("/", async (req, res) => {
-  const notes = await noteModel.find().exec();
-  res.status(200).json({
-    status: true,
-    message: "Notes Fetched!",
-    notes,
-  });
+// app.use(
+//   session({
+//     secret: env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 60 * 60 * 1000,
+//     },
+//     rolling: true,
+//     store: MongoStore.create({
+//       mongoUrl: env.MONGODB,
+//     }),
+//   })
+// );
+
+app.use("/api/notes", noteRoutes);
+
+app.use((req, res, next) => {
+  next(createHttpError(404, "Endpoint not found"));
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: unknown, req: Request, res: Response) => {
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(error);
   let errorMessage = "An unknown error occurred";
   let statusCode = 500;
