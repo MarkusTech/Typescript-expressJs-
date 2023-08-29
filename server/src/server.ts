@@ -1,11 +1,26 @@
 import express from "express";
 import colors from "colors";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 
+// Dotenv Config
+dotenv.config();
+const port = process.env.PORT;
+const db = process.env.MONGODB;
+
+// Rest Object
 const app = express();
-const port = 5000;
 
+// Middlewares
+
+// Rest API
 app.get("/", (req, res) => {
   res.send("Wenn Mark Recopelacion");
+});
+
+// Database
+mongoose.connect(db!).then(() => {
+  console.log("Database Connected".bgGreen);
 });
 
 app.listen(port, () => {
