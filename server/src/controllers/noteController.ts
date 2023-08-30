@@ -1,7 +1,5 @@
-import mongoose from "mongoose";
 import noteModel from "../models/note";
 import { RequestHandler } from "express";
-import createHttpError from "http-errors";
 
 const getNotes: RequestHandler = async (req, res, next) => {
   try {
@@ -17,26 +15,31 @@ const getNotes: RequestHandler = async (req, res, next) => {
 };
 
 const getNote: RequestHandler = async (req, res, next) => {
-  const { noteId } = req.params;
+  const noteId = req.params.noteId;
   try {
-    if (!mongoose.isValidObjectId(noteId)) {
-      throw createHttpError(400, "Invalid note id");
-    }
-
     const note = await noteModel.findById(noteId).exec();
-
-    if (!note) {
-      throw createHttpError(404, "Note not found");
-    }
-
-    // if (!note.userId.equals(authenticatedUserId)) {
-    //     throw createHttpError(401, "You cannot access this note");
-    // }
-
     res.status(200).json(note);
   } catch (error) {
     next(error);
   }
 };
 
-export { getNotes, getNote };
+const createNote: RequestHandler = async (req, res, next) => {
+  const title = req.body.title;
+  const text = req.body.text;
+  try {
+    const newNote = await noteModel.create({
+      title: title,
+      text: text,
+    });
+    res.status(200).json({
+      status: true,
+      message: "Note Added Successfully",
+      newNote,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getNotes, getNote, createNote };
