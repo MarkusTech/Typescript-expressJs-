@@ -15,6 +15,19 @@ const getNotes: RequestHandler = async (req, res, next) => {
   }
 };
 
+const getFuckingNotes: RequestHandler = async (req, res, next) => {
+  try {
+    const notes = await noteModel.find().exec();
+    res.status(200).json({
+      status: true,
+      message: "Fucking User fetched Successfully",
+      notes,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getNote: RequestHandler = async (req, res, next) => {
   const noteId = req.params.noteId;
   try {
@@ -63,4 +76,4 @@ const createNote: RequestHandler<
   }
 };
 
-export { getNotes, getNote, createNote };
+export { getNotes, getNote, createNote, getFuckingNotes };
